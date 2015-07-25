@@ -6,13 +6,21 @@
     <link rel="stylesheet" href="ScalingBabel/app.css" type="text/css" />
     <script src="ScalingBabel/phaser.js"></script>
     <script src="ScalingBabel/ScalingBabel.js"></script>
-    <meta name="viewport" content="width=device-width, minimal-ui,initial-scale=1">
+    <meta name="viewport" content="width=device-width, minimal-ui,initial-scale=1,user-scalable=no">
     <style>
         body {
             padding: 0px;
             margin: 0px;
             background-color: black;
         }
+        @media screen and (width: 320px) {
+			html {
+				height: calc(100% + 72px);
+			}
+			div.cover {
+				display: block;
+			}
+		}
     </style>
 </head>
 <body>
