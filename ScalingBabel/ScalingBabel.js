@@ -26,7 +26,7 @@ var ScalingBabel;
             _super.apply(this, arguments);
         }
         Boot.prototype.preload = function () {
-            this.load.image('bgBoot', 'assets/Boot_bg.png');
+            this.load.image('bgBoot', 'ScalingBabel/assets/Boot_bg.png');
         };
         Boot.prototype.create = function () {
             this.scale.pageAlignVertically = true;

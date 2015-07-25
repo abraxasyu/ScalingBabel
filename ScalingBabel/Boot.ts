@@ -2,7 +2,7 @@
     export class Boot extends Phaser.State {
         bgBoot: Phaser.Image;
         preload() {
-            this.load.image('bgBoot', 'assets/Boot_bg.png');
+            this.load.image('bgBoot', 'ScalingBabel/assets/Boot_bg.png');
         }
         create() {
 
