@@ -19,6 +19,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.css" />
+    <Content Include="assets\Boot_bg.png" />
     <Content Include="index.html" />
     <Content Include="web.config" />
   </ItemGroup>
