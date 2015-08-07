@@ -3,6 +3,7 @@
         bgBoot: Phaser.Image;
         preload() {
             this.load.image('bgBoot', 'assets/Boot_bg.png');
+            this.load.image('Pointer', 'assets/Pointer.png');
         }
         create() {
 
@@ -22,7 +23,8 @@
         update() {
         }
         startLoad() {
-            this.game.state.start('Load');
+            //this.game.state.start('Load');
+            this.game.state.start('Battle');
         }
     }
 }

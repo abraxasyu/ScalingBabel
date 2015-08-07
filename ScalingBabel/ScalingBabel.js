@@ -9,11 +9,93 @@ var __extends = this.__extends || function (d, b) {
 };
 var ScalingBabel;
 (function (ScalingBabel) {
+    (function (Phase) {
+        Phase[Phase["State_Active"] = 0] = "State_Active";
+        Phase[Phase["State_Idle"] = 1] = "State_Idle";
+    })(ScalingBabel.Phase || (ScalingBabel.Phase = {}));
+    var Phase = ScalingBabel.Phase;
+    ;
     var Battle = (function (_super) {
         __extends(Battle, _super);
         function Battle() {
             _super.apply(this, arguments);
+            this.failtime = 0;
+            this.failtimesnap = 2000;
+            this.timesnap = 0;
         }
+        Battle.prototype.create = function () {
+            this.timer = this.time.create(false);
+            this.timer.start();
+            this.lineNPC = this.add.graphics(0, 0);
+            this.lineanimNPC = this.add.graphics(0, 0);
+            this.linePC = this.add.graphics(0, 0);
+            this.lineanimPC = this.add.graphics(0, 0);
+            this.debugtxt = this.add.text(10, 100, 'testing: ' + this.timer.ms, { fontSize: '4 px', fill: 'white' });
+
+            this.imgPointer = this.add.image(0, 0, 'Pointer');
+            this.imgPointer.anchor.setTo(0.5, 0.5);
+            this.imgPointer.alpha = 0;
+        };
+
+        Battle.prototype.update = function () {
+            this.debugtxt.setText('failtimesnap: ' + this.failtimesnap);
+
+            this.failtimesnap -= (this.timer.ms - this.timesnap);
+            this.timesnap = this.timer.ms;
+
+            if (this.failtimesnap <= 0) {
+                this.iniattack();
+
+                this.failtimesnap = this.collapserandom(2000);
+            }
+
+            this.updatePointer();
+        };
+
+        Battle.prototype.updatePointer = function () {
+            if (this.input.activePointer.isDown) {
+                this.imgPointer.alpha = 1;
+                this.imgPointer.position.setTo(this.input.activePointer.x, this.input.activePointer.y);
+            } else {
+                this.imgPointer.alpha = 0;
+            }
+        };
+
+        Battle.prototype.collapserandom = function (collapsems) {
+            return Math.floor((1 - Math.pow(Math.random(), 4)) * collapsems);
+        };
+
+        Battle.prototype.iniattack = function () {
+        };
+
+        Battle.prototype.checkIntersect = function (x1i, y1i, x1, y1, x2i, y2i, x2, y2) {
+            //lines (x1i,y1i) to (x1,y1) vs (x2i,y2i) to (x2,y2)
+            //current location is x1y1 and/or x2y2
+            var m1, m2, b1, b2, px, py;
+            m1 = (y1 - y1i) / (x1 - x1i);
+            m2 = (y2 - y2i) / (x2 - x2i);
+            b1 = (y1 - (m1 * x1));
+            b2 = (y2 - (m2 * x2));
+
+            px = (b2 - b1) / (m1 - m2);
+            py = ((m2 * b1) - (m1 * b2)) / (m2 - m1);
+
+            //check if px,py is within the domain/range of lines
+            return (this.isBetween(x1i, x1, px) && this.isBetween(x2i, x2, px) && this.isBetween(y1i, y1, py) && this.isBetween(y2i, y2, py));
+        };
+
+        Battle.prototype.isBetween = function (n1, n2, checknum) {
+            if (n1 > n2) {
+                //if n1 is greater than n2
+                return (checknum >= n2 && checknum <= n1);
+            } else if (n2 > n1) {
+                //if n2 is greater than n1
+                return (checknum >= n1 && checknum <= n2);
+            } else if (n2 == n1) {
+                //if bounding #s are the same
+                return (checknum == n1);
+            }
+        };
         return Battle;
     })(Phaser.State);
     ScalingBabel.Battle = Battle;
@@ -27,6 +109,7 @@ var ScalingBabel;
         }
         Boot.prototype.preload = function () {
             this.load.image('bgBoot', 'assets/Boot_bg.png');
+            this.load.image('Pointer', 'assets/Pointer.png');
         };
         Boot.prototype.create = function () {
             this.scale.pageAlignVertically = true;
@@ -44,7 +127,8 @@ var ScalingBabel;
         Boot.prototype.update = function () {
         };
         Boot.prototype.startLoad = function () {
-            this.game.state.start('Load');
+            //this.game.state.start('Load');
+            this.game.state.start('Battle');
         };
         return Boot;
     })(Phaser.State);
