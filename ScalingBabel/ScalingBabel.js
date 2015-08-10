@@ -30,7 +30,7 @@ var ScalingBabel;
             this.lineanimNPC = this.add.graphics(0, 0);
             this.linePC = this.add.graphics(0, 0);
             this.lineanimPC = this.add.graphics(0, 0);
-            this.debugtxt = this.add.text(10, 100, 'testing: ' + this.timer.ms, { fontSize: '4 px', fill: 'white' });
+            this.debugtxt = this.add.text(10, 10, 'testing: ' + this.timer.ms, { fontSize: '1 px', fill: 'white' });
 
             this.imgPointer = this.add.image(0, 0, 'Pointer');
             this.imgPointer.anchor.setTo(0.5, 0.5);
@@ -56,6 +56,22 @@ var ScalingBabel;
             if (this.input.activePointer.isDown) {
                 this.imgPointer.alpha = 1;
                 this.imgPointer.position.setTo(this.input.activePointer.x, this.input.activePointer.y);
+
+                //,,,
+                var templine = this.add.graphics(0, 0);
+                templine.lineStyle(1, 0xffffff, 1);
+                templine.moveTo(this.oldinputx, this.oldinputy);
+                templine.lineTo(this.input.activePointer.x, this.input.activePointer.y);
+                templine.alpha = 1;
+
+                //this.debugtxt.setText('oldx' + this.oldinputx + '\noldy' + this.oldinputy + '\nnewx' + this.input.activePointer.x+ '\nnewy' + this.input.activePointer.y);
+                this.add.tween(templine).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
+                this.time.events.add(1000, function () {
+                    templine.destroy();
+                }, this);
+
+                this.oldinputx = this.input.activePointer.x;
+                this.oldinputy = this.input.activePointer.y;
             } else {
                 this.imgPointer.alpha = 0;
             }
