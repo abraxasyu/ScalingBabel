@@ -3,4 +3,3 @@ C:\Users\Sean\Desktop\github\ScalingBabel\ScalingBabel\bin\ScalingBabel.dll
 C:\Users\Sean\Desktop\github\ScalingBabel\ScalingBabel\bin\ScalingBabel.pdb
 C:\Users\Sean\Desktop\github\ScalingBabel\ScalingBabel\obj\Debug\ScalingBabel.dll
 C:\Users\Sean\Desktop\github\ScalingBabel\ScalingBabel\obj\Debug\ScalingBabel.pdb
-C:\Users\Sean\Desktop\github\ScalingBabel\ScalingBabel\obj\Debug\ScalingBabel.csprojResolveAssemblyReference.cache

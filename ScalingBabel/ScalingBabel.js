@@ -22,6 +22,7 @@ var ScalingBabel;
             this.failtime = 0;
             this.failtimesnap = 2000;
             this.timesnap = 0;
+            this.oldtime = 0;
         }
         Battle.prototype.create = function () {
             this.timer = this.time.create(false);
@@ -38,8 +39,7 @@ var ScalingBabel;
         };
 
         Battle.prototype.update = function () {
-            this.debugtxt.setText('failtimesnap: ' + this.failtimesnap);
-
+            //this.debugtxt.setText('failtimesnap1: '+ this.failtimesnap);
             this.failtimesnap -= (this.timer.ms - this.timesnap);
             this.timesnap = this.timer.ms;
 
@@ -47,6 +47,7 @@ var ScalingBabel;
                 this.iniattack();
 
                 this.failtimesnap = this.collapserandom(2000);
+                this.debugtxt.setText('failtimesnap: ' + this.failtimesnap);
             }
 
             this.updatePointer();
@@ -57,19 +58,21 @@ var ScalingBabel;
                 this.imgPointer.alpha = 1;
                 this.imgPointer.position.setTo(this.input.activePointer.x, this.input.activePointer.y);
 
-                //,,,
-                var templine = this.add.graphics(0, 0);
-                templine.lineStyle(1, 0xffffff, 1);
-                templine.moveTo(this.oldinputx, this.oldinputy);
-                templine.lineTo(this.input.activePointer.x, this.input.activePointer.y);
-                templine.alpha = 1;
+                //this.debugtxt.setText('' + Math.sqrt(Math.pow(this.input.activePointer.x - this.oldinputx, 2) + Math.pow(this.input.activePointer.y - this.oldinputy, 2)));
+                if ((this.timer.ms - this.oldtime) < 100) {
+                    var templine = this.add.graphics(0, 0);
+                    templine.lineStyle(1, 0xffffff, 1);
+                    templine.moveTo(this.oldinputx, this.oldinputy);
+                    templine.lineTo(this.input.activePointer.x, this.input.activePointer.y);
+                    templine.alpha = 1;
 
-                //this.debugtxt.setText('oldx' + this.oldinputx + '\noldy' + this.oldinputy + '\nnewx' + this.input.activePointer.x+ '\nnewy' + this.input.activePointer.y);
-                this.add.tween(templine).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
-                this.time.events.add(1000, function () {
-                    templine.destroy();
-                }, this);
-
+                    //this.debugtxt.setText('oldx' + this.oldinputx + '\noldy' + this.oldinputy + '\nnewx' + this.input.activePointer.x+ '\nnewy' + this.input.activePointer.y);
+                    this.add.tween(templine).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
+                    this.time.events.add(1000, function () {
+                        templine.destroy();
+                    }, this);
+                }
+                this.oldtime = this.timer.ms;
                 this.oldinputx = this.input.activePointer.x;
                 this.oldinputy = this.input.activePointer.y;
             } else {
