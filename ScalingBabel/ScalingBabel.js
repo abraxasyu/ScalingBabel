@@ -9,17 +9,10 @@ var __extends = this.__extends || function (d, b) {
 };
 var ScalingBabel;
 (function (ScalingBabel) {
-    (function (Phase) {
-        Phase[Phase["State_Active"] = 0] = "State_Active";
-        Phase[Phase["State_Idle"] = 1] = "State_Idle";
-    })(ScalingBabel.Phase || (ScalingBabel.Phase = {}));
-    var Phase = ScalingBabel.Phase;
-    ;
     var Battle = (function (_super) {
         __extends(Battle, _super);
         function Battle() {
             _super.apply(this, arguments);
-            this.failtime = 0;
             this.failtimesnap = 2000;
             this.timesnap = 0;
             this.oldtime = 0;
@@ -44,34 +37,35 @@ var ScalingBabel;
             this.timesnap = this.timer.ms;
 
             if (this.failtimesnap <= 0) {
+                //parameter should be >500
+                this.failtimesnap = this.collapserandom(2000);
                 this.iniattack();
 
-                this.failtimesnap = this.collapserandom(2000);
-                this.debugtxt.setText('failtimesnap: ' + this.failtimesnap);
+                this.debugtxt.setText('failtimesnap1: ' + this.failtimesnap);
             }
-
             this.updatePointer();
         };
 
         Battle.prototype.updatePointer = function () {
             if (this.input.activePointer.isDown) {
+                //cursor point
                 this.imgPointer.alpha = 1;
                 this.imgPointer.position.setTo(this.input.activePointer.x, this.input.activePointer.y);
 
-                //this.debugtxt.setText('' + Math.sqrt(Math.pow(this.input.activePointer.x - this.oldinputx, 2) + Math.pow(this.input.activePointer.y - this.oldinputy, 2)));
+                //cursor trail line
                 if ((this.timer.ms - this.oldtime) < 100) {
-                    var templine = this.add.graphics(0, 0);
-                    templine.lineStyle(1, 0xffffff, 1);
-                    templine.moveTo(this.oldinputx, this.oldinputy);
-                    templine.lineTo(this.input.activePointer.x, this.input.activePointer.y);
-                    templine.alpha = 1;
-
-                    //this.debugtxt.setText('oldx' + this.oldinputx + '\noldy' + this.oldinputy + '\nnewx' + this.input.activePointer.x+ '\nnewy' + this.input.activePointer.y);
-                    this.add.tween(templine).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
+                    var trailline = this.add.graphics(0, 0);
+                    trailline.lineStyle(2, 0xccffff);
+                    trailline.moveTo(this.oldinputx, this.oldinputy);
+                    trailline.lineTo(this.input.activePointer.x, this.input.activePointer.y);
+                    trailline.alpha = 1;
+                    this.add.tween(trailline).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
                     this.time.events.add(1000, function () {
-                        templine.destroy();
+                        trailline.destroy();
                     }, this);
                 }
+
+                //time update
                 this.oldtime = this.timer.ms;
                 this.oldinputx = this.input.activePointer.x;
                 this.oldinputy = this.input.activePointer.y;
@@ -81,10 +75,33 @@ var ScalingBabel;
         };
 
         Battle.prototype.collapserandom = function (collapsems) {
-            return Math.floor((1 - Math.pow(Math.random(), 4)) * collapsems);
+            return Math.floor((1 - Math.pow(Math.random(), 4)) * (collapsems - 500)) + 500;
         };
 
         Battle.prototype.iniattack = function () {
+            var attchoice = this.getrandintrange(1, 1);
+            var circlerad = 30;
+            switch (attchoice) {
+                case 1:
+                    var tempcircle = this.add.graphics(0, 0);
+                    tempcircle.lineStyle(10, 0xff0000, 0.2);
+                    tempcircle.alpha = 0.2;
+                    tempcircle.drawCircle(this.getrandintrange(0 + circlerad, 320 - circlerad), this.getrandintrange(0 + circlerad, 480 - circlerad), circlerad);
+
+                    this.add.tween(tempcircle).to({ alpha: 5 }, this.failtimesnap / 2, Phaser.Easing.Linear.None, true, 0, 0, false);
+                    this.time.events.add(this.failtimesnap, function () {
+                        tempcircle.destroy();
+                    }, this);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+        };
+
+        Battle.prototype.getrandintrange = function (min, max) {
+            return Math.floor((Math.random() * (max - min + 1))) + min;
         };
 
         Battle.prototype.checkIntersect = function (x1i, y1i, x1, y1, x2i, y2i, x2, y2) {
