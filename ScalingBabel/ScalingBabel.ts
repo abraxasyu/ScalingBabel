@@ -12,7 +12,7 @@ module ScalingBabel {
             this.state.add('Boot', Boot, false);
             this.state.add('Load', Load, false);
             this.state.add('Menu', Menu, false);
-            this.state.add('Map', Map, false);
+            this.state.add('WorldMap', WorldMap, false);
             this.state.add('Battle', Battle, false);
 
             this.state.start('Boot');

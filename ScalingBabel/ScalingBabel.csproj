@@ -28,7 +28,7 @@
     <TypeScriptCompile Include="Battle.ts" />
     <TypeScriptCompile Include="Boot.ts" />
     <TypeScriptCompile Include="Load.ts" />
-    <TypeScriptCompile Include="Map.ts" />
+    <TypeScriptCompile Include="WorldMap.ts" />
     <TypeScriptCompile Include="Menu.ts" />
     <TypeScriptCompile Include="ScalingBabel.ts" />
   </ItemGroup>

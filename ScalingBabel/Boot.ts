@@ -4,6 +4,8 @@
         preload() {
             this.load.image('bgBoot', 'assets/Boot_bg.png');
             this.load.image('Pointer', 'assets/Pointer.png');
+            this.load.image('dmgTaken', 'assets/dmgTaken.png');
+            this.load.image('dmgDone', 'assets/dmgDone.png');
         }
         create() {
 
