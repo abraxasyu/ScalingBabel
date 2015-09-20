@@ -27,16 +27,14 @@ var ScalingBabel;
             this.lineanimNPC = this.add.graphics(0, 0);
             this.linePC = this.add.graphics(0, 0);
             this.lineanimPC = this.add.graphics(0, 0);
-            this.debugtxt = this.add.text(10, 10, 'sanity3: ' + this.timer.ms, { fontSize: '20 px', fill: 'white' });
 
+            //this.debugtxt = this.add.text(10, 10, 'sanity3: '+this.timer.ms, { fontSize: '20 px', fill: 'white' });
             this.imgPointer = this.add.image(0, 0, 'Pointer');
             this.imgPointer.anchor.setTo(0.5, 0.5);
             this.imgPointer.alpha = 0;
         };
 
         Battle.prototype.update = function () {
-            //this.debugtxt.setText('failtimesnap1: '+ this.failtimesnap);
-            //this.debugtxt.setText('alkeys: ' + this.attackListKeys.length);
             this.failtimesnap -= (this.timer.ms - this.timesnap);
             this.timesnap = this.timer.ms;
 
@@ -120,8 +118,6 @@ var ScalingBabel;
 
         Battle.prototype.processattack = function (gobject, coordray) {
             this.attackList.set(gobject, coordray);
-
-            //this.debugtxt.setText('length: ' + this.attackList.get(gobject).length);
             this.attackListKeys.push(gobject);
             this.add.tween(gobject).to({ alpha: 5 }, this.failtimesnap / 2, Phaser.Easing.Linear.None, true, 0, 0, false);
             this.time.events.add(this.failtimesnap, function () {
@@ -140,7 +136,7 @@ var ScalingBabel;
             }, this);
         };
         Battle.prototype.doDmg = function () {
-            //this.debugtxt.setText("dmg taken");
+            //this.debugtxt.setText("dmg done");
             this.dmgDone = this.add.image(0, 0, 'dmgDone');
             this.add.tween(this.dmgDone).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
             this.time.events.add(1000, function () {
@@ -264,6 +260,17 @@ var ScalingBabel;
 })(ScalingBabel || (ScalingBabel = {}));
 var ScalingBabel;
 (function (ScalingBabel) {
+    var WorldMap = (function (_super) {
+        __extends(WorldMap, _super);
+        function WorldMap() {
+            _super.apply(this, arguments);
+        }
+        return WorldMap;
+    })(Phaser.State);
+    ScalingBabel.WorldMap = WorldMap;
+})(ScalingBabel || (ScalingBabel = {}));
+var ScalingBabel;
+(function (ScalingBabel) {
     var Menu = (function (_super) {
         __extends(Menu, _super);
         function Menu() {
@@ -292,16 +299,5 @@ var ScalingBabel;
         return Game;
     })(Phaser.Game);
     ScalingBabel.Game = Game;
-})(ScalingBabel || (ScalingBabel = {}));
-var ScalingBabel;
-(function (ScalingBabel) {
-    var WorldMap = (function (_super) {
-        __extends(WorldMap, _super);
-        function WorldMap() {
-            _super.apply(this, arguments);
-        }
-        return WorldMap;
-    })(Phaser.State);
-    ScalingBabel.WorldMap = WorldMap;
 })(ScalingBabel || (ScalingBabel = {}));
 //# sourceMappingURL=ScalingBabel.js.map
